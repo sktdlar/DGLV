@@ -32,6 +32,7 @@
           <Property Name="Login" Type="nvarchar" MaxLength="50" />
           <Property Name="Password" Type="nvarchar" MaxLength="30" />
           <Property Name="Image" Type="nvarchar(max)" />
+          <Property Name="ImageBinary" Type="varbinary(max)" />
         </EntityType>
         <Association Name="FK_User_Role">
           <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
@@ -96,6 +97,7 @@
           <Property Name="Password" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Role" Relationship="CRUDModel.FK_User_Role" FromRole="User" ToRole="Role" />
+          <Property Name="ImageBinary" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <Association Name="FK_User_Role">
           <End Type="CRUDModel.Role" Role="Role" Multiplicity="0..1" />
@@ -137,6 +139,7 @@
           <EntitySetMapping Name="User">
             <EntityTypeMapping TypeName="CRUDModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="ImageBinary" ColumnName="ImageBinary" />
                 <ScalarProperty Name="Image" ColumnName="Image" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Login" ColumnName="Login" />

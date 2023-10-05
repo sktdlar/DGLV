@@ -20,6 +20,7 @@ namespace CRUDApp.DataBase
         public string Login { get; set; }
         public string Password { get; set; }
         public string Image { get; set; }
+        public byte[] ImageBinary { get; set; }
     
         public virtual Role Role { get; set; }
     }

@@ -3,11 +3,13 @@ using Microsoft.Win32;
 using System;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using System.Windows.Media;
 
 namespace CRUDApp.Pages
 {
@@ -25,6 +27,7 @@ namespace CRUDApp.Pages
         }
         public string ImageSource { get; set; }
         public int Count = App.Db.User.Count();
+        public byte[] ImageBinary;
 
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -38,6 +41,12 @@ namespace CRUDApp.Pages
                 imgPicture.Source =
                     new BitmapImage(new Uri(ofdPicture.FileName));
             ImageSource = ofdPicture.FileName;
+            ImageBinary = File.ReadAllBytes(ImageSource);
+            using(var memoryStream = new MemoryStream(ImageBinary))
+            {
+                imgPicture = Image.FromStream();
+            }
+
 
 
         }
@@ -58,7 +67,8 @@ namespace CRUDApp.Pages
                         idRole = RoleCb.SelectedIndex + 1,
                         Login = LoginTb.Text,
                         Password = PasswordPb.Password,
-                        Image = ImageSource
+                        Image = ImageSource,
+                        ImageBinary = this.ImageBinary
                     });
                     App.Db.SaveChanges();
                     MessageBox.Show("Все прошло нормально");
