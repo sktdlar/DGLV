@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Media;
+using System.Drawing;
 
 namespace CRUDApp.Pages
 {
@@ -24,14 +25,17 @@ namespace CRUDApp.Pages
             RoleCb.ItemsSource = App.Db.Role.ToList();
             RoleCb.DisplayMemberPath = "Name";
 
+
         }
-        public string ImageSource { get; set; }
+        public string ImageSource = "\\Source\\Cross.png";
         public int Count = App.Db.User.Count();
         public byte[] ImageBinary;
 
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
             OpenFileDialog ofdPicture = new OpenFileDialog();
             ofdPicture.Filter =
                 "Image files|*.bmp;*.jpg;*.gif;*.png;*.tif|All files|*.*";
@@ -42,9 +46,15 @@ namespace CRUDApp.Pages
                     new BitmapImage(new Uri(ofdPicture.FileName));
             ImageSource = ofdPicture.FileName;
             ImageBinary = File.ReadAllBytes(ImageSource);
+            System.Drawing.Image image;
             using(var memoryStream = new MemoryStream(ImageBinary))
             {
-                imgPicture = Image.FromStream();
+                image = System.Drawing.Image.FromStream(memoryStream);
+            }
+            }
+            catch
+            {
+                MessageBox.Show("что-то не так(((");
             }
 
 

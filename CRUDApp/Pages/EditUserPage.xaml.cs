@@ -3,6 +3,7 @@ using Microsoft.Win32;
 using System;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,9 +27,18 @@ namespace CRUDApp.Pages
             RoleCb.SelectedIndex = (int)(CurrentUser.idRole - 1);
             LoginTb.Text = CurrentUser.Login;
             PasswordPb.Password = CurrentUser.Password;
-            if (CurrentUser.Image != null)
+            try
+            {
+                if (CurrentUser.Image != null)
                 imgPicture.Source = new BitmapImage(new Uri(CurrentUser.Image));
-            ImageSource = CurrentUser.Image;
+                ImageSource = CurrentUser.Image;
+            }
+            catch
+            {
+                ImageSource = "C:\\Users\\Данил\\source\\repos\\CRUDApp\\CRUDApp\\Source\\Cross.png";
+                imgPicture.Source = new BitmapImage(new Uri("C:\\Users\\Данил\\source\\repos\\CRUDApp\\CRUDApp\\Source\\Cross.png"));
+            }
+            
 
 
         }
@@ -45,7 +55,7 @@ namespace CRUDApp.Pages
 
             if (ofdPicture.ShowDialog() == true)
                 imgPicture.Source =
-                    new BitmapImage(new Uri(ofdPicture.FileName));
+                    new BitmapImage(new Uri(ofdPicture.FileName, UriKind.Relative));
             ImageSource = ofdPicture.FileName;
 
 
@@ -56,12 +66,13 @@ namespace CRUDApp.Pages
         {
             try
             {
-
+                byte[] ImageBinary = File.ReadAllBytes(ImageSource);
                 GridPage.CurrentUser.FName = FNameTb.Text;
                 GridPage.CurrentUser.idRole = RoleCb.SelectedIndex + 1;
                 GridPage.CurrentUser.Login = LoginTb.Text;
                 GridPage.CurrentUser.Password = PasswordPb.Password;
                 GridPage.CurrentUser.Image = ImageSource;
+                GridPage.CurrentUser.ImageBinary = ImageBinary;
                 App.Db.SaveChanges();
                 MessageBox.Show("Все прошло нормально");
                 NavigationService.GoBack();
@@ -79,6 +90,10 @@ namespace CRUDApp.Pages
                     }
                 }
             }
+            //catch
+            //{
+            //    MessageBox.Show("что-то не так");
+            //}
 
         }
 
