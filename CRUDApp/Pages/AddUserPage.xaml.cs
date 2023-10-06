@@ -36,21 +36,17 @@ namespace CRUDApp.Pages
         {
             try
             {
-            OpenFileDialog ofdPicture = new OpenFileDialog();
-            ofdPicture.Filter =
-                "Image files|*.bmp;*.jpg;*.gif;*.png;*.tif|All files|*.*";
-            ofdPicture.FilterIndex = 1;
+                OpenFileDialog ofdPicture = new OpenFileDialog();
+                ofdPicture.Filter =
+                    "Image files|*.bmp;*.jpg;*.gif;*.png;*.tif|All files|*.*";
+                ofdPicture.FilterIndex = 1;
 
-            if (ofdPicture.ShowDialog() == true)
-                imgPicture.Source =
-                    new BitmapImage(new Uri(ofdPicture.FileName));
-            ImageSource = ofdPicture.FileName;
-            ImageBinary = File.ReadAllBytes(ImageSource);
-            System.Drawing.Image image;
-            using(var memoryStream = new MemoryStream(ImageBinary))
-            {
-                image = System.Drawing.Image.FromStream(memoryStream);
-            }
+                if (ofdPicture.ShowDialog() == true)
+                    imgPicture.Source =
+                        new BitmapImage(new Uri(ofdPicture.FileName));
+                ImageSource = ofdPicture.FileName;
+                ImageBinary = File.ReadAllBytes(ImageSource);
+                imgPicture.Source = new BitmapImage(new Uri(ImageSource));
             }
             catch
             {
